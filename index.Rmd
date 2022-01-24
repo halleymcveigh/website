@@ -1,0 +1,16 @@
+---
+title: "Halley McVeigh"
+image: "IMG_2232 (3).JPG"
+links:
+  - label: LinkedIn
+    url: "https://www.linkedin.com/in/halley-mcveigh-85b201197/"
+  - label: GitHub
+    url: "https://github.com/halleymcveigh"
+  - label: Email
+    url: "mailto:hmcveigh@bren.ucsb.edu"
+output:
+  postcards::trestles
+site: distill::distill_website
+---
+ 
+I am a graduate student at the Bren School of Environmental Science & Management where I specialize in Coastal and Marine Resource Management with a focus in Strategic Environmental Communication. 
