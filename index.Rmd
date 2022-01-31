@@ -13,4 +13,6 @@ output:
 site: distill::distill_website
 ---
  
-I am a graduate student at the Bren School of Environmental Science & Management where I specialize in Coastal and Marine Resource Management with a focus in Strategic Environmental Communication. 
+My name is Halley and I am a graduate student at the Bren School of Environmental Science & Management where I specialize in Coastal Marine Resources Management with a focus in Strategic Environmental Communication and Media. 
+
+I'm interested in researching and developing collaborative solutions that are both restorative for the ecosystem and beneficial for communities. I came to Santa Barbara (UCSB) from Maine where I worked in the oyster aquaculture field for years, combining my love for applied research and working on the water. In my free time I enjoy cooking and baking and love to be outdoors - camping, hiking, running, gardening, and anything at the ocean!

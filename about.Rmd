@@ -1,10 +1,33 @@
 ---
-title: "About this site"
+title: "About me"
 description: |
-  Some additional details about the website
+  CV and past projects
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
+
+
+
+
+![Conducting research with microscopy: a larval lobster!] (PF6031_lobster_h.jpg)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
