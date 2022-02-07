@@ -1,5 +1,39 @@
 [
   {
+    "path": "posts/2022-02-07-grad-school-on-the-road/",
+    "title": "Grad school on the road",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Halley McVeigh",
+        "url": {}
+      }
+    ],
+    "date": "2022-02-07",
+    "categories": [],
+    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2022-02-07T13:44:21-08:00",
+    "input_file": "grad-school-on-the-road.knit.md"
+  },
+  {
+    "path": "posts/2022-02-07-GP/",
+    "title": "Group Project highlights",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Halley McVeigh",
+        "url": {}
+      }
+    ],
+    "date": "2022-02-07",
+    "categories": [],
+    "contents": "\r\nTraveling on Vancouver IslandDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2022-02-07T13:51:28-08:00",
+    "input_file": "gp.knit.md"
+  },
+  {
     "path": "posts/2022-01-31-welcome/",
     "title": "welcome",
     "description": "A short description of the post.",
@@ -13,7 +47,7 @@
     "categories": [],
     "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2022-01-31T15:09:07-08:00",
+    "last_modified": "2022-02-07T13:41:31-08:00",
     "input_file": {}
   }
 ]
