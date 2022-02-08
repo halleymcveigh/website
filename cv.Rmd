@@ -14,4 +14,12 @@ library(vitae)
 ```{r}
 
 knitr::include_graphics("files/mcveigh_cv_feb_2022.pdf")
+
+
 ```
+
+![CV](files/mcveigh_cv_feb_2022.pdf)
+
+
+
+
