@@ -1,0 +1,17 @@
+---
+title: "CV"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(vitae)
+```
+
+**CV**
+
+```{r}
+
+knitr::include_graphics("files/mcveigh_cv_feb_2022.pdf")
+```

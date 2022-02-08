@@ -1,6 +1,6 @@
 ---
 title: "About me"
-description: "CV and past experiences"
+description: "Past experiences"
 ---
 
 ```{r setup, include=FALSE}
