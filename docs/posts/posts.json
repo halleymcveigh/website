@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2022-02-21-exploratory-analaysis-of-sierra-amphibians/",
+    "title": "Exploratory analaysis of Sierra amphibians",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Halley McVeigh",
+        "url": {}
+      }
+    ],
+    "date": "2022-02-21",
+    "categories": [],
+    "contents": "\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2022-02-21T14:53:38-08:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2022-02-07-GP/",
     "title": "Group Project highlights",
     "description": "Site visits and highlights from the Bren Group Project experience.",

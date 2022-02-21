@@ -87,29 +87,26 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
   <!--radix_placeholder_meta_tags-->
-  <title>H.M.: About me</title>
+  <title>H.M.: Projects</title>
 
-  <meta property="description" itemprop="description" content="Past experiences"/>
 
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="H.M.: About me"/>
+  <meta property="og:title" content="H.M.: Projects"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Past experiences"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="H.M."/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="H.M.: About me"/>
-  <meta property="twitter:description" content="Past experiences"/>
+  <meta property="twitter:title" content="H.M.: Projects"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["About me"]},{"type":"character","attributes":{},"value":["Past experiences"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","listing"]}},"value":[{"type":"character","attributes":{},"value":["Projects"]},{"type":"character","attributes":{},"value":["posts"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2363,12 +2360,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 </head>
 
-<body>
+<body class="layout-listing">
 
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"About me","description":"Past experiences","authors":[]}
+{"title":"Projects","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2391,38 +2388,226 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_navigation_before_body-->
 <!--radix_placeholder_site_before_body-->
 <!--/radix_placeholder_site_before_body-->
+<!--radix_placeholder_article_listing-->
+
+
+<script type="application/javascript">
+
+function init_posts_list() {
+
+  function load_image(img) {
+    var src = $(img).attr('data-src');
+    if (src) {
+      $(img).attr('src', src);
+      $(img).on("load", function() {
+        img.removeAttribute('data-src');
+      });
+    }
+  }
+
+  function set_posts_visible(posts, visible) {
+    if (visible) {
+
+      // show bottom border by default
+      $(posts).removeClass('post-preview-last');
+
+      // apply limits if need be
+      var max_posts = 25;
+      var apply_limits = $('.posts-container').hasClass('posts-apply-limit');
+      if (apply_limits && posts.length > max_posts) {
+        posts = $(posts).slice(0, max_posts);
+      } else {
+        $('.posts-more a').addClass('hidden');
+      }
+
+      // apply last style
+      $(posts.slice(-1)[0]).addClass('post-preview-last');
+
+      $(posts).removeClass('hidden');
+      $(posts).find('img[data-src]').each(function(i, img) {
+        load_image(img);
+      });
+    } else {
+      $(posts).addClass('hidden');
+    }
+  }
+
+  function apply_hash_filter() {
+
+    // clear active state
+    $('.categories .active').removeClass('active');
+
+    // mark all posts invisible to start
+    set_posts_visible($('.posts-list').children('a'), false);
+
+    // if we have a hash filter
+    if (window.location.hash && window.location.hash.startsWith("#category:")) {
+
+      // mark posts that match the category visible
+      var page_category = window.location.hash.replace(/^#category:/, "");
+      page_category = decodeURIComponent(page_category)
+      var posts = $('.post-metadata').map(function(idx, script) {
+        var metadata = $.parseJSON($(script).html());
+        var post = null;
+        $.each(metadata.categories, function(idx, category) {
+          category = category.replace(/ /g,"_");
+          if ((page_category || '').toLowerCase() === "articles" || category === page_category) {
+            post = $(script).parent().get();
+            return false;
+          }
+        });
+        return post;
+      });
+      set_posts_visible(posts, true);
+
+      // mark the hash active
+      $('.categories li>a[href="' + decodeURIComponent(window.location.hash) + '"]').addClass('active');
+
+      // update the list_caption
+      var list_caption = $('.posts-list-caption');
+      var caption = (page_category || '').toLowerCase() === "articles"
+        ? list_caption.attr('data-caption')
+        : ('Category: ' + page_category.replace(/_/g," "));
+      list_caption.text(caption);
+
+    } else {
+
+      // no hash filter, make all posts visible (subject to max display)
+      set_posts_visible($('.posts-list').children(), true);
+
+      // reset list caption
+      var list_caption = $('.posts-list-caption');
+      list_caption.text(list_caption.attr('data-caption'));
+
+
+    }
+  }
+
+  // more articles
+  function apply_post_limits(apply) {
+    if (apply) {
+      $('.posts-container').addClass('posts-apply-limit');
+      $('.posts-more a').removeClass('hidden');
+    } else {
+      $('.posts-container').removeClass('posts-apply-limit');
+      $('.posts-more a').addClass('hidden');
+    }
+  }
+
+  // click handling for tags
+  $('.dt-tag').click(function(ev) {
+    window.location.hash = '#category:' + $(this).text().replace(/ /g, "_");
+    return false;
+  })
+
+  // hash filter handling
+  apply_hash_filter();
+  $(window).on('hashchange',function() {
+    apply_post_limits(true);
+    apply_hash_filter();
+  });
+
+  // more articles link
+  $('.posts-more a').click(function(e) {
+    e.preventDefault();
+    apply_post_limits(false);
+    apply_hash_filter();
+    return false;
+  });
+
+}
+
+</script>
+
+
+
+<div class="posts-container posts-apply-limit l-page">
+<div class="posts-list">
+<h1 class="posts-list-caption" data-caption="Projects">Projects</h1>
+<a href="posts/2022-02-21-exploratory-analaysis-of-sierra-amphibians/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":[]}</script>
+<div class="metadata">
+<div class="publishedDate">Feb. 21, 2022</div>
+<div class="dt-authors">
+<div class="dt-author">Halley McVeigh</div>
+</div>
+</div>
+<div class="thumbnail">
+<img/>
+</div>
+<div class="description">
+<h2>Exploratory analaysis of Sierra amphibians</h2>
+<div class="dt-tags"></div>
+<p>A short description of the post.</p>
+</div>
+</a>
+<a href="posts/2022-02-07-GP/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":[]}</script>
+<div class="metadata">
+<div class="publishedDate">Feb. 7, 2022</div>
+<div class="dt-authors">
+<div class="dt-author">Halley McVeigh</div>
+</div>
+</div>
+<div class="thumbnail">
+<img/>
+</div>
+<div class="description">
+<h2>Group Project highlights</h2>
+<div class="dt-tags"></div>
+<p>Site visits and highlights from the Bren Group Project experience.</p>
+</div>
+</a>
+<a href="posts/2022-02-07-grad-school-on-the-road/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":[]}</script>
+<div class="metadata">
+<div class="publishedDate">Feb. 7, 2022</div>
+<div class="dt-authors">
+<div class="dt-author">Halley McVeigh</div>
+</div>
+</div>
+<div class="thumbnail">
+<img/>
+</div>
+<div class="description">
+<h2>Grad school on the road</h2>
+<div class="dt-tags"></div>
+<p>A short description of the post.</p>
+</div>
+</a>
+<a href="posts/2022-01-31-welcome/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":[]}</script>
+<div class="metadata">
+<div class="publishedDate">Jan. 31, 2022</div>
+<div class="dt-authors">
+<div class="dt-author">Halley McVeigh</div>
+</div>
+</div>
+<div class="thumbnail">
+<img/>
+</div>
+<div class="description">
+<h2>welcome</h2>
+<div class="dt-tags"></div>
+<p>A short description of the post.</p>
+</div>
+</a>
+</div>
+<div class="posts-more">
+<a href="#">More articles &raquo;</a>
+</div>
+</div>
+<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
-<h1>About me</h1>
+<h1>Projects</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-<p>Past experiences</p>
+
 </div>
 
 
 <div class="d-article">
-<p>I graduated from Warren Wilson College in 2015 with a Bachelor of Science degree in Biology. I’ve has always gravitated towards the coast for both my career and many varied pastimes and am driven by the potential that healthy marine systems hold to sustain communities with food, energy, employment, and invaluable ecosystem services. During my undergraduate education, I carried out research in Maine for my thesis on the effect of climate change conditions on larval lobster development.</p>
-<figure>
-<img src="images/PF6031_lobster_h.jpg" alt="Conducting research with microscopy: a very colorful larval lobster!" /><figcaption aria-hidden="true">Conducting research with microscopy: a very colorful larval lobster!</figcaption>
-</figure>
-<p>After graduation I began work in the environmental nonprofit sector in North Carolina before transitioning into research and industry environments. I entered the aquaculture field at Virginia Institute for Marine Sciences where I focused on breeding and genetics research of oysters.</p>
-<figure>
-<img src="images/IMG_1766.JPG" alt="Monitoring a genetic line of oysters at one of our grow-out sites" /><figcaption aria-hidden="true">Monitoring a genetic line of oysters at one of our grow-out sites</figcaption>
-</figure>
-<p>I then returned to Maine to continue research and fieldwork with commercial shellfish hatcheries and farms.</p>
-<figure>
-<img src="images/IMG_2943%20(1).JPG" alt="Lot’s more time doing microscopy, this time with larval oysters" /><figcaption aria-hidden="true">Lot’s more time doing microscopy, this time with larval oysters</figcaption>
-</figure>
-<figure>
-<img src="images/IMG_9111.png" alt="And some good days out on the water at the farm" /><figcaption aria-hidden="true">And some good days out on the water at the farm</figcaption>
-</figure>
-<p>Before heading back to school to begin the MESM program at Bren I participated in the Sockeye salmon commercial season in Bristol Bay, AK.</p>
-<figure>
-<img src="images/IMG_6535.jpg" alt="We caught a lot of salmon and marveled in the beauty of Alaska" /><figcaption aria-hidden="true">We caught a lot of salmon and marveled in the beauty of Alaska</figcaption>
-</figure>
-<p><img src="images/IMG_6438.jpg" /></p>
-<p><img src="images/IMG_6523.jpg" /></p>
-<p>My experiences focus on encouraging sustainable fishing practices and improving marine aquaculture methods to increase productivity and resilience of sustainable seafood production in a changing climate. I’m interested in developing collaborative solutions that are both restorative for the ecosystem and economically beneficial for coastal communities. I’m passionate about protecting marine environments and resources while developing innovative ventures and resilience-based management.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
