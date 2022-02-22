@@ -1,0 +1,217 @@
+---
+title: "Task 2 - Parameter Estimation with Purrr - Lizards Length to Weight"
+author: "Halley McVeigh"
+date: "1/31/2022"
+output:
+  html_document:
+    code_folding: hide
+---
+
+```{r setup, include=TRUE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+library(here)
+library(tidyverse)
+library(purrr)
+library(janitor)
+library(broom)
+library(kableExtra)
+library(modelr)
+```
+
+```{r}
+lizards <- read_csv(here("data", "lizard.csv")) %>% 
+  clean_names() %>% 
+  drop_na()
+```
+
+### Using non linear least squares to estimate parameters of a length to weight model for lizard populations in New Mexico.
+
+##### **Data source:** [Lightfoot, D. and W.G. Whitford. 2020. Lizard pitfall trap data from 11 NPP study locations at the Jornada Basin LTER site, 1989-2006 ver 37. Environmental Data Initiative.] (https://doi.org/10.6073/pasta/4a6e258fb49c31e222ecbbcfd128967f)
+
+
+
+\[
+W = a(SVL)^b
+\]
+
+
+#### Create a function for the above equation where W is the body weight and SVL is the snout-vent length of lizard populations in New Mexico:
+```{r}
+lizard_function <- function(a, sv_length, b){
+  W = a*sv_length^b
+  return(W)
+}
+
+```
+
+```{r}
+# Using OLS to find b-intercept
+
+guess_df <- lizards %>% 
+  mutate(log_weight = log(weight),
+         log_length = log(sv_length))
+
+# Create guess vectors and coefficient
+guess_vec <- lm(log_weight ~ log_length, data = guess_df)
+guess_coef <- coef(guess_vec)
+
+lizard_nls <- nls(weight ~ lizard_function(a, sv_length, b),
+                  data = lizards,
+                  start =
+                    list(a = 2.718^(guess_coef[1]/guess_coef[2]), b = guess_coef[2]),
+                  trace = TRUE)
+
+summary(lizard_nls)
+```
+
+#### Plot of lizard snout-vent length and body weight by sex with nls predicted
+```{r}
+
+sv_length_series <- seq(0, 150, by = 1) # for sv_length of 0-150 mm
+
+pred <- predict(lizard_nls, list(sv_length = sv_length_series)) #predictions with model
+
+lizards_predicted <- data.frame(sv_length_series, pred) #combine predicted and series into data frame
+
+
+# Plot lizards data and predicted
+
+ggplot(data = lizards) +
+  geom_point(aes(x = sv_length, y = weight, color = sex)) +
+  theme_minimal() +
+  labs(x = "Snout-vent length (mm)", y = "Body weight (g)",
+       title = "Lizard snout-vent length and body weight by sex",
+       subtitle = "Predicted fitted model of lizards using non linear least squares shown in black") +
+  geom_line(data = lizards_predicted, aes(x = sv_length_series, y = pred))
+```
+
+
+**Figure 1:** Scatterplot showing the relationship between lizard snout-vent length (mm) and lizard body weight (g) of female (shown in pink) and male (shown in teal) lizards. A fitted model using non linear least squares of lizard predictions is shown in black. (Data: Lightfoot, D. and W.G. Whitford. 2020).
+
+
+
+```{r}
+lizards_nls_tidy <- broom::tidy(lizard_nls)
+```
+
+
+**Table 1:** Non linear least square model parameters for terms **a** and **b** for the fitted model for lizard populations in New Mexico using snout-vent length and body weight.
+```{r}
+kable(lizards_nls_tidy, digits = 5) %>% 
+  kable_styling(full_width = FALSE)
+```
+
+
+
+
+### Filter out a subset of male Western Whiptail (CNTI) (*Cnemidophorus tigrisatus*) lizards
+```{r}
+# Subset for male CNTI lizards
+
+cnti_male_lizards <- lizards %>% 
+  filter(spp == 'CNTI') %>% 
+  filter(sex == 'M')
+```
+
+```{r}
+# Make a dataframe and log 
+
+cnti_male_df <- cnti_male_lizards %>%
+  mutate(log_weight = log(weight),
+         log_length = log(sv_length))
+
+guess_male_vec <- lm(log_weight ~ log_length, data = cnti_male_df)
+guess_male_coef<- coef(guess_male_vec)
+
+cnti_male_nls <- nls(weight ~ lizard_function(a, sv_length, b),
+                  data = cnti_male_lizards,
+                  start = list(a=2.718^(guess_coef[1]/guess_coef[2]), b=guess_coef[2]),
+                  trace = TRUE)
+
+summary(cnti_male_nls)
+
+```
+
+
+
+#### Plot of lizard snout-vent length and body weight with nls predicted for male Western Whiptail (CNTI) (*Cnemidophorus tigrisatus*) lizards
+
+```{r}
+
+cnti_sv_length_series <- seq(0, 110, by = 1) # for sv_length of 0-110 mm
+
+cnti_pred <- predict(cnti_male_nls, list(sv_length = cnti_sv_length_series)) #predictions with model
+
+cnti_male_predicted <- data.frame(cnti_sv_length_series, cnti_pred) #combine predicted and series into data frame
+
+
+# Plot lizards data and predicted
+
+ggplot(data = cnti_male_lizards) +
+  geom_point(aes(x = sv_length, y = weight), color = "darkcyan") +
+  theme_minimal() +
+  labs(x = "Snout-vent length (mm)", y = "Body weight (g)",
+       title = "Male Western Whiptail lizards by snout-vent length and body weight",
+       subtitle = "With predicted fitted models using non linear least squares") +
+  geom_line(data = cnti_male_predicted, aes(x = cnti_sv_length_series, y = cnti_pred)) +
+  geom_line(data = lizards_predicted, aes(x = sv_length_series, y = pred), color = "darkred") +
+  coord_cartesian(xlim = c(0, 105))
+```
+
+**Figure 2:** Scatterplot showing the relationship between lizard snout-vent length (mm) and lizard body weight (g) of male (shown in teal) Western Whiptail lizards. A fitted model using non linear least squares of male Western Whiptail lizard predictions is shown in black. The fitted model using non linear least squares of all lizard predictions is shown in dark red. (Data: Lightfoot, D. and W.G. Whitford. 2020).
+
+
+
+```{r}
+cnti_male_nls_tidy <- broom::tidy(cnti_male_nls)
+```
+
+**Table 2:** Non linear least square model parameters for terms **a** and **b** for the fitted model for male Western Whiptail lizards (*Cnemidophorus tigrisatus*) using snout-vent length and body weight.
+
+```{r}
+kable(cnti_male_nls_tidy, digits = 5) %>% 
+  kable_styling(full_width = FALSE)
+```
+
+
+#### Apply both models to male Western Whiptail subset and compare RMSEs
+
+```{r}
+rmse <- function(x, y) {
+  rmse <- (x-y)^2 %>% mean() %>% sqrt()
+  return(rmse)
+}
+
+cnti_pred_rmse <- predict(cnti_male_nls, cnti_male_df)
+
+lizard_cnti_pred_rmse <- predict(lizard_nls, cnti_male_df)
+
+rmse_df <- data.frame(cnti_pred_rmse, lizard_cnti_pred_rmse, cnti_male_lizards)
+
+rmse_predict <- rmse_df %>% 
+  summarize(rmse_lizard = rmse(weight, lizard_cnti_pred_rmse),
+            rmse_cnti = rmse(weight, cnti_pred_rmse)) %>% 
+  rename(
+    'RMSE for full lizard population NLS model' = rmse_lizard,
+    'RMSE for CNTI lizard NLS model' = rmse_cnti
+  )
+
+
+kable(rmse_predict,
+    caption = "Table of Root-Mean_Square Errors for Two Models when applied to male Western Whiptail lizard subset", digits = 2) %>% 
+  kable_styling(full_width = FALSE)
+
+```
+
+**Table 3:** The RMSE values for the nonlinear least squares model fitted to the entire lizard population dataset and the model fitted to the male Western Whiptail lizard when applied to the male Western Whiptail lizard subset. The RMSE value for the subset data NLS is lower, indicating a better predictor model. This model better fits the subset data and should be used for male Western Whiptail lizards.
+
+
+
+
+
+
+
+
+
+

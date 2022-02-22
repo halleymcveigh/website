@@ -1,7 +1,7 @@
 ---
 title: "Exploratory analaysis of Sierra amphibians"
 description: |
-  A short description of the post.
+  An exploration of amphibian abundance from the Sierra Lakes Inventory Project.
 author:
   - name: Halley McVeigh
     url: {}
@@ -9,6 +9,8 @@ date: 2022-02-21
 output:
   distill::distill_article:
     self_contained: false
+    code_folding: hide
+    theme: paper
 ---
 
 ```{r setup, include=TRUE, warning = FALSE, message = FALSE}
