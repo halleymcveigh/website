@@ -5,6 +5,3 @@ output: distill::distill_article
 
 <a href = 'halley_mcveigh_resume_feb_2022.pdf' target = '_blank'>Click here for a PDF</a>
 
-
-
-![](files/halley_mcveigh_resume_feb_2022-page-002.jpg)
