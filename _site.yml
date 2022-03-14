@@ -4,6 +4,8 @@ description: |
   mfeo
 output_dir: "docs"
 navbar:
+  logo:
+    image: fish_icon.jpg
   right:
     - text: "Home"
       href: index.html

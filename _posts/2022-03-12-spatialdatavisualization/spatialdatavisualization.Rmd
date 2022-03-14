@@ -1,0 +1,54 @@
+---
+title: "Spatial Data Visualization"
+description: |
+  An exploration of California oil spills drawn from the CA DFW Oil Spill Incident Tracking dataset. An interactive map shows the location of oil spill events.
+author:
+  - name: Halley McVeigh
+    url: {}
+date: 2022-03-07
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: hide
+    theme: sandstone
+---
+
+```{r setup, include=TRUE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+#packages to attach
+library(tidyverse)
+library(here)
+library(sf)
+library(janitor)
+library(tmap)
+```
+
+### **Overview:** This is an exploration of California oil spills. The dataset is drawn from CA DFW Oil Spill Incident Tracking. An interactive map shows the location of oil spill events.
+
+#### An "incident" is considered "a discharge or threatened discharge of petroleum or other deleterious material into the waters of the state." The Office of Spill Prevention and Response (OSPR) Incident Tracking Database is a statewide oil spill tracking information system. The data are collected by OSPR Field Response Team members for Marine oil spills and by OSPR Inland Pollution Coordinators and Wardens for Inland incidents.
+
+
+```{r}
+#Read in the data for CA DFW oil spills
+
+oil_spills_sf <- read_sf(here("data", "ds394.shp")) %>% 
+  clean_names()
+
+counties_sf <- read_sf(here("data", "ca_counties", "CA_Counties_TIGER2016.shp"))
+
+counties_sf_subset <- counties_sf %>% 
+  select(NAME, ALAND) %>% 
+  rename(county_name = NAME, land_area = ALAND)
+
+# Check CRS:
+#counties_sf %>% st_crs()
+#oil_spills_sf %>%  st_crs()
+
+# Set CRS of oil_spills to be same as counties
+oil_spills_sf <- st_transform(oil_spills_sf, st_crs(counties_sf))
+
+# Re-check CRS:
+#oil_spills_sf %>% st_crs()
+
+```

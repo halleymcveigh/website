@@ -10,7 +10,7 @@ output:
   distill::distill_article:
     self_contained: false
     code_folding: hide
-    theme: paper
+    theme: sandstone
 ---
 
 ```{r setup, include=TRUE, warning = FALSE, message = FALSE}
