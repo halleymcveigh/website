@@ -1,5 +1,5 @@
 ---
-title: "Exploratory analaysis of Sierra amphibians"
+title: "Exploratory Analysis of Sierra Amphibians"
 description: |
   An exploration of amphibian abundance from the Sierra Lakes Inventory Project.
 author:
@@ -23,15 +23,15 @@ library(lubridate)
 library(patchwork)
 ```
 
-## This task will involve wrangling data for Sierra amphibians and creating a compound data visualization figure. I will explore amphibian abundance data recorded by the Sierra Lakes Inventory Project (SLIP).
+## This project involves wrangling data for Sierra amphibians and creating a compound data visualization figure. It is an exploration of amphibian abundance data recorded by the Sierra Lakes Inventory Project (SLIP).
 
 ### Data citation: *Knapp,R.A., C. Pavelka, E.E. Hegeman, and T.C. Smith. 2020. The Sierra Lakes Inventory Project: Non-Native fish and community composition of lakes and ponds in the Sierra Nevada, California ver 2. Environmental Data Initiative.* https://doi.org/10.6073/pasta/d835832d7fd00d9e4466e44eea87fab3
 
 
-### Read in and wrangle the data
+
 
 ```{r}
-# Read in amphibian data
+# Read in amphibian data and wrangle
 
 amphibians <- readxl::read_xlsx(here("data", "sierra_amphibians.xlsx"))
 
@@ -85,7 +85,7 @@ rana_muscosa_top5$lake_id = paste('Lake', rana_muscosa_top5$lake_id, sep = ' ')#
 # create ggplot
 graph2 <- ggplot(data= rana_muscosa_top5, aes(x=reorder(lake_id, -rana_muscosa_count), y=rana_muscosa_count)) +
   geom_col(fill = "cyan4", color = "black") +
-  labs(title = "Top 5 lakes with the greatest counts of Mountain yellow-legged adult and subadult frogs", 
+  labs(title = "Top 5 lakes with the greatest counts of \nMountain yellow-legged adult and subadult frogs", 
        x= "Lake ID",
        y = "Count (adults and subadults)") +
   theme_minimal() +
@@ -96,12 +96,12 @@ graph2
 
 ### Combine both plots into a compound figure using `patchwork` package
 
-```{r, fig.cap = "Figure 1. Top: The change in Mountain Yellow-Legged Frog counts from 1995 to 2002 for different life stages - adults, subadults and tadpoles. Bottom: The top 5 lakes with the highest counts of adult and subadult Mountain Yellow-Legged Frogs."}
+```{r}
 
 graph1 + graph2 + plot_layout(ncol = 1, heights = c(2,2)) #combining graph 1 and graph 2 on the same figure
 ```
 
-
+**Figure 3.** Top: The change in Mountain Yellow-Legged Frog counts from 1995 to 2002 for different life stages - adults, subadults and tadpoles. Bottom: The top 5 lakes with the highest counts of adult and subadult Mountain Yellow-Legged Frogs.
 
 
 

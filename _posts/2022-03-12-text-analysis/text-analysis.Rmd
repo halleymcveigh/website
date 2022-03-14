@@ -27,9 +27,9 @@ library(here)
 library(wesanderson)
 ```
 ### Overview:
-#### *Braiding Sweetgrass: Indigenous Wisdom, Scientific Knowledge and the Teachings of Plants* is a nonfiction book by Robin Wall Kimmerer, an enrolled member of the Citizen Potawatomi Nation and a professor at SUNY-ESF. In this book she explores the relationships between humans and land and the roles that both Indigenous knowledge and Western scientific approaches play in understanding and appreciating these relationships. Kimmerer describes the book as "an invitation to celebrate the gifts of the earth."
+### *Braiding Sweetgrass: Indigenous Wisdom, Scientific Knowledge and the Teachings of Plants* is a nonfiction book by Robin Wall Kimmerer, an enrolled member of the Citizen Potawatomi Nation and a professor at SUNY-ESF. In this book she explores the relationships between humans and land and the roles that both Indigenous knowledge and Western scientific approaches play in understanding and appreciating these relationships. Kimmerer describes the book as "an invitation to celebrate the gifts of the earth."
 
-#### The following is an exploration of the text in *Braiding Sweetgrass* with visual representations of trends, patterns, and sentiments.
+### The following is an exploration of the text in *Braiding Sweetgrass* with visual representations of trends, patterns, and sentiments.
 
 <br>
 ![](files/braiding_sweetgrass.jpg)
@@ -37,7 +37,7 @@ library(wesanderson)
 <br>
 
 
-#### Top 100 words in *Braiding Sweetgrass*
+### Top 100 words in *Braiding Sweetgrass*
 
 ```{r, fig.align = "center"}
 # Read in the data from pdf
@@ -89,7 +89,7 @@ wordcloud
 
 
 
-#### A sentiment analysis with the NRC lexicon 
+### A sentiment analysis with the NRC lexicon 
 The NRC Emotion Lexicon is a compiled list of English words and their associated emotion, from eight basic emotions (anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) or sentiment (positive and negative). 
 
 ```{r, fig.align = "center"}
@@ -134,11 +134,12 @@ ggplot(data = braiding_nrc_counts, aes(y = sentiment, x = n)) +
 
 
 
-#### **Data citation:** 
+### **Data citation:** 
+
 Kimmerer, Robin Wall. 2013 Braiding Sweetgrass. Minneapolis, MN: Milkweed Editions.
 
 
-**For NRC lexicon**: Crowdsourcing a Word-Emotion Association Lexicon, Saif Mohammad and Peter Turney, Computational Intelligence, 29 (3), 436-465, 2013.
+For NRC lexicon: Crowdsourcing a Word-Emotion Association Lexicon, Saif Mohammad and Peter Turney, Computational Intelligence, 29 (3), 436-465, 2013.
 
 
 

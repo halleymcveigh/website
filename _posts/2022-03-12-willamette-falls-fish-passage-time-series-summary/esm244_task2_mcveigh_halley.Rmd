@@ -5,7 +5,7 @@ date: "3/7/2022"
 output:
   html_document:
     code_folding: hide
-    theme: cosmo
+    theme: sandstone
   
 ---
 
@@ -27,7 +27,7 @@ library(slider)
 ```
 
 ### **Overview:**
-#### This report explores and visualizes data for adult fish passage at the Willamette Falls fish ladder on the Willamette River, Oregon from January 1, 2001 to December 31, 2010. The species included in this dataset are Coho, Jack coho, and Steelhead. The three tabs include visualizations for fish counts across various time periods. Data are recorded and made accessible by the Columbia River DART project. 
+This report explores and visualizes data for adult fish passage at the Willamette Falls fish ladder on the Willamette River, Oregon from January 1, 2001 to December 31, 2010. The species included in this dataset are Coho, Jack coho, and Steelhead. The three tabs include visualizations for fish counts across various time periods. Data are recorded and made accessible by the Columbia River DART project. 
 
 <br>
 
